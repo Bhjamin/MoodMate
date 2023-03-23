@@ -7,8 +7,10 @@ function UserProvider({children}) {
     const [user, setUser] = useState({
 
         user_id: null,
-        username: '',
+        token: '',
         points: 0,
+        login: () => {},
+        logout: () => {}
         
     })
 

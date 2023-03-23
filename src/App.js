@@ -1,5 +1,6 @@
 import './App.css';
 import { useUser } from './context/userContext';
+import Auth from './components/Auth';
 
 function App() {
 
@@ -8,7 +9,7 @@ function App() {
 
   return (
     <div className="">
-    
+    <Auth/>
     </div>
   );
 }
