@@ -1,29 +1,101 @@
-import * as React from 'react'
-import { useState } from 'react'
+import { useState, createContext } from 'react'
 
-const UserContext = React.createContext()
+let logoutTimer
 
-function UserProvider({children}) {
-    const [user, setUser] = useState({
+const AuthContext = createContext({
+  token: '',
+  login: () => {},
+  logout: () => {},
+  userId: null,
+})
 
-        user_id: null,
-        token: '',
-        points: 0,
-        login: () => {},
-        logout: () => {}
-        
-    })
-
-  const value = {user}
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>
+const calculateRemainingTime = (exp) => {
+  const currentTime = new Date().getTime()
+  const expTime = exp 
+  const remainingTime = expTime - currentTime
+  return remainingTime
 }
 
-function useUser() {
-  const context = React.useContext(UserContext)
-  if (context === undefined) {
-    throw new Error('useUser must be used within a UserProvider')
+const getLocalData = () => {
+  const storedToken = localStorage.getItem('token')
+  const storedExp = localStorage.getItem('exp')
+
+  const remainingTime = calculateRemainingTime(storedExp)
+
+  if (remainingTime <= 1000 * 60 * 30) {
+    localStorage.removeItem('token')
+    localStorage.removeItem('exp')
+    return null
   }
-  return context
+
+
+  return {
+    token: storedToken,
+    duration: remainingTime,
+  }
 }
 
-export {UserProvider, useUser}
+
+
+export const AuthContextProvider = (props) => {
+  const localData = getLocalData()
+  
+  let initialToken
+  if (localData) {
+    initialToken = localData.token
+  }
+
+  const [token, setToken] = useState(initialToken)
+  const [userId, setUserId] = useState(null)
+
+
+  const logout = () => {
+    
+    setToken(null)
+    setUserId(null)
+
+    localStorage.removeItem('token')
+    let bruh = JSON.parse(localStorage.getItem('expTime'))
+    localStorage.removeItem('expTime')
+
+    let remainingTime = calculateRemainingTime(bruh)
+
+    console.log(remainingTime)
+
+    if(remainingTime > 0){
+      clearTimeout(logoutTimer)
+    }  
+  }
+
+  const login = (token, time, id) => {
+
+    setToken(token)
+    setUserId(id)
+
+    localStorage.setItem('token', token)
+    localStorage.setItem('expTime', time)
+
+    let remainingTime = calculateRemainingTime(time)
+
+    logoutTimer = setTimeout(logout, remainingTime)
+
+    console.log(remainingTime)
+
+  }
+
+  const contextValue = {
+    token,
+    login,
+    logout, 
+    userId,
+
+  }
+
+  return (
+    <AuthContext.Provider value={contextValue}>
+      {props.children}
+    </AuthContext.Provider>
+  )
+}
+
+export default AuthContext

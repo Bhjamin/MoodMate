@@ -1,7 +1,8 @@
 import Animation from "./Animation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-
+import AuthContext from "../context/userContext";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [username, setUsername] = useState("");
@@ -10,26 +11,29 @@ const Auth = () => {
   const [showPass, setShowPass] = useState("password");
   const [quote, setQuote] = useState('')
   const [author, setAuthor] = useState('')
+  const navigate = useNavigate()
+
+  const {login} = useContext(AuthContext)
 
   const showPassHandler = () => {
     showPass === "password" ? setShowPass("text") : setShowPass("password");
   };
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    let randomNum = Math.floor(Math.random() * 1500)
+  //   let randomNum = Math.floor(Math.random() * 1500)
 
-    axios.get("https://type.fit/api/quotes")
-    .then(res => {
+  //   axios.get("https://type.fit/api/quotes")
+  //   .then(res => {
 
-        let QOTD = res.data[randomNum]
+  //       let QOTD = res.data[randomNum]
 
-        setQuote(QOTD.text)
-        setAuthor(QOTD.author)
+  //       setQuote(QOTD.text)
+  //       setAuthor(QOTD.author)
         
-    }).catch(err => console.log(err))
+  //   }).catch(err => console.log(err))
 
-  }, [])
+  // }, [])
 
  const registerToggleHandler = (e) => {
     e.preventDefault()
@@ -37,6 +41,28 @@ const Auth = () => {
     setRegister(!register)
 
  }
+
+
+ const handleSubmit = (e) => {
+  e.preventDefault()
+
+  axios.post(register ? 'http://localhost:6655/register' : 'http://localhost:6655/login' , {username, password})
+  .then(res => {
+    console.log(res.data)
+
+    setUsername('')
+    setPassword('')
+
+    login(res.data.token, res.data.exp, res.data.userId)
+
+    navigate('/profile')
+
+  })
+  .catch(err => console.log(err))
+
+ }
+
+
 
   return (
     <div className=" bg-base-100 w-full h-full flex flex-col items-center ">
@@ -46,7 +72,7 @@ const Auth = () => {
 
         <section className="w-2/5 flex items-center justify-center mb-10">
           <div
-            className="tooltip tooltip-bottom"
+            className="tooltip tooltip-bottom before:max-w-xl before:leading-9 before:text-lg before:p-4 before:rounded-2xl "
             data-tip="Mood Mate is an easy-to-use mental health assistance website designed to help users prioritize their mental well-being. While it may not solve all mental health problems, Mood Mate is a helpful tool that encourages users to take time each day to reflect on their thoughts and emotions.
 
             With Mood Mate, users can easily identify their emotions and write down their thoughts in a safe, private online journal. This feature helps users to become more self-aware, and allows them to reflect on their emotional state throughout the day."
@@ -94,7 +120,7 @@ const Auth = () => {
             </div>
             <br/>
             <div className=" w-full flex flex-col justify-center items-center">
-            <button className="btn btn-primary w-20 ">{register ? "register" : "login"}</button>
+            <button onClick={(e) => {handleSubmit(e)}} className="btn btn-primary w-20 ">{register ? "register" : "login"}</button>
             <br/>
             <br/>
             <button className="btn btn-sm" onClick={(e) => {registerToggleHandler(e)}} >Click here to {register ? "login" : "register"}</button>
@@ -106,7 +132,7 @@ const Auth = () => {
             <div className="flex flex-col items-center w-3/5 mb-10">
             <p>"{quote}"</p>
             <br/>
-            <p>- {author}</p>
+            {author ? <p>- {author}</p> : <p>- Unknown</p>}
             </div>
         </section>
 
