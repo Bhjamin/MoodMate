@@ -1,4 +1,5 @@
 import Animation from "./Animation";
+import ErrorAnimation from "./ErrorAnimation";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import AuthContext from "../context/userContext";
@@ -11,6 +12,7 @@ const Auth = () => {
   const [showPass, setShowPass] = useState("password");
   const [quote, setQuote] = useState('')
   const [author, setAuthor] = useState('')
+  const [error, setError] = useState('')
   const navigate = useNavigate()
 
   const {login} = useContext(AuthContext)
@@ -58,14 +60,21 @@ const Auth = () => {
     navigate('/profile')
 
   })
-  .catch(err => console.log(err))
+  .catch((err) => {
 
+    setError(err.response.data)
+
+    setTimeout(() => {
+      setError('')
+    }, 5000)
+
+  })
  }
 
 
 
   return (
-    <div className=" bg-base-100 w-full h-full flex flex-col items-center ">
+    <div className=" overflow-x-hidden overflow-y-auto bg-base-100 w-full h-full flex flex-col items-center ">
       <Animation />
 
       <div className="w-full flex flex-row">
@@ -82,6 +91,9 @@ const Auth = () => {
         </section>
 
         <section className=" w-1/5 items-center justify-center">
+          <div className="h-10">
+          <ErrorAnimation error={error} />
+          </div>
           <form className="flex flex-col">
             <div className="form-control m-4">
               <label className="label-text m-1">
