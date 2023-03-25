@@ -7,10 +7,10 @@ const ErrorAnimation = ({ error }) => {
         {error ? (
           <motion.div
             key={error}
-            initial={{ opacity: 0, x: -1500 }}
+            initial={{ opacity: 0, x: -1000}}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.75, ease: "easeIn" }}
-            exit={{ opacity: 0, x: 1500 }}
+            transition={{ duration: 1.25, type: 'spring', bounce: .20 }}
+            exit={{ opacity: 0, x: 1000 }}
           >
             <div className="alert alert-error shadow-xl">
               <div>
