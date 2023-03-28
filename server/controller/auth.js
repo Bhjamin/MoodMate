@@ -19,6 +19,21 @@ module.exports = {
     try {
       const { username, password } = req.body;
 
+      if(password.length === 0) {
+        res.status(400).send("Please enter a password")
+        return
+      }
+
+      if(password.length < 4) {
+        res.status(400).send("Password must be at least 4 characters long")
+        return
+      }
+
+      if(username.length < 4) {
+        res.status(400).send("Username must be at least 4 characters long")
+        return
+      }
+
       let foundUser = await User.findOne({ where: { username } });
 
       if (foundUser) {
@@ -58,7 +73,24 @@ module.exports = {
     try{
 
         const { username, password } = req.body
+
+        if(password.length === 0) {
+          res.status(400).send("Please enter a password")
+          return
+        }
+  
+        if(password.length < 4) {
+          res.status(400).send("Password must be at least 4 characters long")
+          return
+        }
+  
+        if(username.length < 4) {
+          res.status(400).send("Username must be at least 4 characters long")
+          return
+        }
+
         let foundUser = await User.findOne({ where: { username } })
+
 
         if(foundUser){
 
@@ -72,7 +104,8 @@ module.exports = {
                     username: foundUser.username,
                     userId: foundUser.id,
                     token,
-                    exp
+                    exp,
+                    points: foundUser.points
                 })
 
             } else {

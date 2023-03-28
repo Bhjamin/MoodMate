@@ -6,6 +6,7 @@ const { User, Entries } = require('./models/user')
 const { sequelize } = require('./util/database')
 
 const { register, login } = require('./controller/auth')
+const { getUserPoints, updateUserPoints } = require('./controller/points')
 
 User.hasMany(Entries)
 Entries.belongsTo(User)
@@ -23,6 +24,8 @@ app.use(cors())
 
 app.post('/register', register )
 app.post('/login', login )
+app.get('/points/:userId', getUserPoints)
+app.put('/points/:userId', updateUserPoints)
 
 
 sequelize.sync()

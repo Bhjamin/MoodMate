@@ -15,7 +15,9 @@ const Auth = () => {
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
-  const {login} = useContext(AuthContext)
+  const {login, updateUsername} = useContext(AuthContext)
+
+  const authCtx = useContext(AuthContext)
 
   const showPassHandler = () => {
     showPass === "password" ? setShowPass("text") : setShowPass("password");
@@ -55,9 +57,13 @@ const Auth = () => {
     setUsername('')
     setPassword('')
 
+    
+    updateUsername(res.data.username)
+
     login(res.data.token, res.data.exp, res.data.userId)
 
     navigate('/profile')
+
 
   })
   .catch((err) => {

@@ -12,7 +12,12 @@ module.exports = {
         },
         username: DataTypes.STRING,
         hashedPass: DataTypes.STRING,
-        points: DataTypes.INTEGER
+        points: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+          },
+        date: DataTypes.INTEGER
     }),
 
     Entries: sequelize.define('entries', {
@@ -24,7 +29,7 @@ module.exports = {
         },
         question: DataTypes.STRING,
         answer: DataTypes.STRING,
-        date: DataTypes.DATE,
+        date: DataTypes.INTEGER,
         emotion: DataTypes.STRING
     }),
 

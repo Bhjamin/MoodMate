@@ -7,6 +7,12 @@ const AuthContext = createContext({
   login: () => {},
   logout: () => {},
   userId: null,
+  username: '',
+  updateUsername: () => {},
+  points: 0,
+  getPoints: () => {},
+  updatePoints: () => {}
+  
 })
 
 const calculateRemainingTime = (exp) => {
@@ -19,6 +25,8 @@ const calculateRemainingTime = (exp) => {
 const getLocalData = () => {
   const storedToken = localStorage.getItem('token')
   const storedExp = localStorage.getItem('exp')
+  const storedUsername = localStorage.getItem('username')
+  const storedPoints = localStorage.getItem('points')
 
   const remainingTime = calculateRemainingTime(storedExp)
 
@@ -32,6 +40,8 @@ const getLocalData = () => {
   return {
     token: storedToken,
     duration: remainingTime,
+    username: storedUsername,
+    points: storedPoints
   }
 }
 
@@ -41,12 +51,25 @@ export const AuthContextProvider = (props) => {
   const localData = getLocalData()
   
   let initialToken
+  let initialId
+  let initialUsername
+  let initialPoints
   if (localData) {
     initialToken = localData.token
+    initialId = localData.userId
+    initialUsername = localData.username
+    initialPoints = localData.points
   }
 
+
+
   const [token, setToken] = useState(initialToken)
-  const [userId, setUserId] = useState(null)
+  const [userId, setUserId] = useState(initialId)
+  const [username, setUser] = useState(initialUsername)
+
+
+
+  const [points, setPoints] = useState(initialPoints ? initialPoints : 0)
 
 
   const logout = () => {
@@ -83,12 +106,34 @@ export const AuthContextProvider = (props) => {
 
   }
 
+ 
+
+  const updateUsername = (name) => {
+    setUser(name)
+  }
+
+  const getPoints = (num) => {
+    
+    setPoints(num)
+
+  }
+
+  const updatePoints = () => {
+
+    setPoints(points + 1)
+
+  }
+
   const contextValue = {
     token,
     login,
     logout, 
     userId,
-
+    username,
+    points,
+    updateUsername,
+    getPoints,
+    updatePoints
   }
 
   return (
