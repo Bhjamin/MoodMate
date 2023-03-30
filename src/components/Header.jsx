@@ -10,7 +10,6 @@ const Header = () => {
 
     const { points, username, userId, getPoints, updatePoints, logout } = authCtx
 
-
     
     useEffect(() => {
 
@@ -51,7 +50,6 @@ const Header = () => {
                 </div>
 
                 <div className=" m-2 w-1/3 flex justify-end ">
-                    <button className="btn btn-secondary mr-7">Past Entries</button>
                     <button className="btn btn-primary" onClick={logout} >Logout</button>
                 </div>
                 

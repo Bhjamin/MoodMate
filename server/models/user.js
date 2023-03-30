@@ -17,7 +17,8 @@ module.exports = {
             allowNull: false,
             defaultValue: 0
           },
-        date: DataTypes.INTEGER
+        date: DataTypes.STRING,
+        taskDate: DataTypes.STRING
     }),
 
     Entries: sequelize.define('entries', {
@@ -27,9 +28,13 @@ module.exports = {
             allowNull: false,
             primaryKey: true
         },
-        question: DataTypes.STRING,
-        answer: DataTypes.STRING,
-        date: DataTypes.INTEGER,
+        question1: DataTypes.STRING,
+        answer1: DataTypes.STRING,
+        question2: DataTypes.STRING,
+        answer2: DataTypes.STRING,
+        question3: DataTypes.STRING,
+        answer3: DataTypes.STRING,
+        date: DataTypes.STRING,
         emotion: DataTypes.STRING
     }),
 

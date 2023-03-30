@@ -11,7 +11,9 @@ const AuthContext = createContext({
   updateUsername: () => {},
   points: 0,
   getPoints: () => {},
-  updatePoints: () => {}
+  updatePoints: () => {},
+  dailyEmotion: null,
+  updateDailyEmotion: () => {}
   
 })
 
@@ -66,10 +68,10 @@ export const AuthContextProvider = (props) => {
   const [token, setToken] = useState(initialToken)
   const [userId, setUserId] = useState(initialId)
   const [username, setUser] = useState(initialUsername)
-
-
-
   const [points, setPoints] = useState(initialPoints ? initialPoints : 0)
+
+  // this might cause problems
+  const [dailyEmotion, setDailyEmotion] = useState(null)
 
 
   const logout = () => {
@@ -124,6 +126,12 @@ export const AuthContextProvider = (props) => {
 
   }
 
+  const updateDailyEmotion = (emo) => {
+    setDailyEmotion(emo)
+  }
+
+
+
   const contextValue = {
     token,
     login,
@@ -133,7 +141,10 @@ export const AuthContextProvider = (props) => {
     points,
     updateUsername,
     getPoints,
-    updatePoints
+    updatePoints,
+    dailyEmotion,
+    updateDailyEmotion
+   
   }
 
   return (

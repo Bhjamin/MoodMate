@@ -11,7 +11,7 @@ function App() {
   console.log(authCtx)
 
   return (
-    <div className="h-screen">
+    <div className="h-screen overflow-x-hidden overflow-y-auto">
     <Routes>
       <Route path='/' element={<Auth/>} />
       <Route path='/profile' element={authCtx.token ? <Profile/> : <Navigate to='/'/>} />
