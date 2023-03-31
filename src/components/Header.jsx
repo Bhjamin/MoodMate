@@ -45,8 +45,8 @@ const Header = () => {
                 </div>
 
                 <div className="flex flex-col justify-center items-center w-1/3">
-                    <p className="text-lg inline-flex">Welcome back, <p className="text-primary ml-1">{username}</p> </p> 
-                    <p>You have {points} self-care points</p>
+                    <p className="text-lg inline-flex">{points < 2 ? 'Welcome, ' : 'Welcome back,'}<p className="text-primary ml-1">{username}</p> </p> 
+                    <p>You took time out of <p className="inline text-primary">{points}</p> {points === 1 ? 'day' : 'days'} to help yourself!</p>
                 </div>
 
                 <div className=" m-2 w-1/3 flex justify-end ">

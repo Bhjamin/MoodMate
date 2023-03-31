@@ -7,11 +7,13 @@ import axios  from 'axios'
 import DailyEmotion from './DailyEmotion'
 import DailyTasks from './DailyTasks'
 import FinishedTasksAnimation from './FinishedTasksAnimation'
+import LoadingAnimation from './LoadingAnimation'
 
 const Profile = () => {
 
   const [didEmotion, setDidEmotion] = useState(false)
   const [didTasks, setDidTasks] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const authCtx = useContext(AuthContext)
 
@@ -50,11 +52,21 @@ const Profile = () => {
 
             if(res.data !== checkDate){
 
+              setTimeout(() => {
+                setIsLoading(false)
+
+              }, 500)
+
               setDidEmotion(false)
 
             }
 
             if(res.data === checkDate){
+
+              setTimeout(() => {
+                setIsLoading(false)
+
+              }, 500)
 
               setDidEmotion(true)
 
@@ -77,11 +89,21 @@ const Profile = () => {
 
             if(res.data !== checkDate){
 
+              setTimeout(() => {
+              setIsLoading(false)
+
+              }, 500)
+
               setDidTasks(false)
 
             }
 
             if(res.data === checkDate){
+
+              setTimeout(() => {
+              setIsLoading(false)
+
+              }, 500)
 
               setDidTasks(true)
 
@@ -97,12 +119,16 @@ const Profile = () => {
     <div className=' overflow-x-hidden overflow-y-hidden'>
       <Header/>
 
+      {isLoading ? <LoadingAnimation isLoading={isLoading}/> : 
 
+      <>
       <DailyEmotion submitEmoHandler={submitEmoHandler} didEmotion={didEmotion} />
 
       <DailyTasks didEmotion={didEmotion} didTasks={didTasks} setDidTasks={setDidTasks}/>
 
       <FinishedTasksAnimation didTasks={didTasks} />
+      </>
+      }
 
 
       </div>

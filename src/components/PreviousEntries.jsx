@@ -18,7 +18,7 @@ const PreviousEntries = ({seePastEntries}) => {
         setData(res.data);
       })
       .catch((err) => console.log(err));
-  }, [userId]);
+  }, [userId, seePastEntries]);
 
   return (
     <AnimatePresence mode=" popLayout ">

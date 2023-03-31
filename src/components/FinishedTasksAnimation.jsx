@@ -2,10 +2,12 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import PreviousEntries from "./PreviousEntries";
+import ConfettiExplosion from "react-confetti-explosion";
 
 const FinishedTasksAnimation = ({ didTasks }) => {
   const [display, setDisplay] = useState(false);
   const [seePastEntries, setSeePastEntries] = useState(false);
+  const [isExploding, setIsExploding] = useState(true)
 
   const pastEntriesHandler = () => {
     setSeePastEntries(!seePastEntries);
@@ -19,6 +21,12 @@ const FinishedTasksAnimation = ({ didTasks }) => {
         setDisplay(true);
       }, 850);
     }
+
+
+    setTimeout(() => {
+      setIsExploding(false)
+    }, 3000)
+
   }, [didTasks]);
 
   return (
@@ -36,6 +44,7 @@ const FinishedTasksAnimation = ({ didTasks }) => {
               <p className="text-primary text-5xl font-semibold">
                 All done for today
               </p>
+              {isExploding && <ConfettiExplosion force={.5} particleCount={150} width={2000}/>}
               <br />
               <p className="text-3xl font-medium">Be proud of yourself!</p>
               <br />
