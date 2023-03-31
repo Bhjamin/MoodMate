@@ -23,21 +23,21 @@ const Auth = () => {
     showPass === "password" ? setShowPass("text") : setShowPass("password");
   };
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   let randomNum = Math.floor(Math.random() * 1500)
+    let randomNum = Math.floor(Math.random() * 1500)
 
-  //   axios.get("https://type.fit/api/quotes")
-  //   .then(res => {
+    axios.get("https://type.fit/api/quotes")
+    .then(res => {
 
-  //       let QOTD = res.data[randomNum]
+        let QOTD = res.data[randomNum]
 
-  //       setQuote(QOTD.text)
-  //       setAuthor(QOTD.author)
+        setQuote(QOTD.text)
+        setAuthor(QOTD.author)
         
-  //   }).catch(err => console.log(err))
+    }).catch(err => console.log(err))
 
-  // }, [])
+  }, [])
 
  const registerToggleHandler = (e) => {
     e.preventDefault()
