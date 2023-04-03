@@ -60,7 +60,7 @@ const Auth = () => {
     
     updateUsername(res.data.username)
 
-    login(res.data.token, res.data.exp, res.data.userId)
+    login(res.data.token, res.data.exp, res.data.userId, res.data.username, res.data.points)
 
     navigate('/profile')
 

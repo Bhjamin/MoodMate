@@ -1,139 +1,122 @@
-import React from 'react'
-import Header from './Header'
-import { useContext } from "react"
-import AuthContext from "../context/userContext"
-import { useEffect, useState } from "react"
-import axios  from 'axios'
-import DailyEmotion from './DailyEmotion'
-import DailyTasks from './DailyTasks'
-import FinishedTasksAnimation from './FinishedTasksAnimation'
-import LoadingAnimation from './LoadingAnimation'
+import React from "react";
+import Header from "./Header";
+import { useContext } from "react";
+import AuthContext from "../context/userContext";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import DailyEmotion from "./DailyEmotion";
+import DailyTasks from "./DailyTasks";
+import FinishedTasksAnimation from "./FinishedTasksAnimation";
+import LoadingAnimation from "./LoadingAnimation";
 
 const Profile = () => {
+  const [didEmotion, setDidEmotion] = useState(false);
+  const [didTasks, setDidTasks] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [didEmotion, setDidEmotion] = useState(false)
-  const [didTasks, setDidTasks] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const authCtx = useContext(AuthContext);
 
-  const authCtx = useContext(AuthContext)
-
-  const { userId, updateDailyEmotion } = authCtx
+  const { userId, updateDailyEmotion } = authCtx;
 
   const submitEmoHandler = (emo) => {
+    updateDailyEmotion(emo);
 
-   updateDailyEmotion(emo)
+    setDidEmotion(true);
 
-   setDidEmotion(true)
-   
-   axios.put(`http://localhost:6655/emotion/${userId}`)
-   .then(res => {
-
-    console.log(res.data)
-
-   }).catch(err => console.log(err))
-
-  }
-  
+    axios
+      .put(`http://localhost:6655/emotion/${userId}`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
+    axios
+      .get(`http://localhost:6655/emotion/${userId}`)
+      .then((res) => {
+        console.log(res.data);
 
-    axios.get(`http://localhost:6655/emotion/${userId}`)
-        .then(res => {
+        const today = new Date();
+        const date = today.getDate();
+        const month = today.getMonth() + 1;
+        const year = today.getFullYear();
 
-            console.log(res.data)
+        const checkDate = `${month}/${date}/${year}`;
 
-             const today = new Date();
-             const date = today.getDate();
-             const month = today.getMonth() + 1; 
-             const year = today.getFullYear();
+        if (res.data !== checkDate) {
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
 
-             const checkDate = `${month}/${date}/${year}`
+          setDidEmotion(false);
+        }
 
+        if (res.data === checkDate) {
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
 
-            if(res.data !== checkDate){
+          setDidEmotion(true);
+        }
+      })
+      .catch((err) => console.log(err));
 
-              setTimeout(() => {
-                setIsLoading(false)
+    axios
+      .get(`http://localhost:6655/task/${userId}`)
+      .then((res) => {
+        console.log(res.data);
 
-              }, 500)
+        const today = new Date();
+        const date = today.getDate();
+        const month = today.getMonth() + 1;
+        const year = today.getFullYear();
 
-              setDidEmotion(false)
+        const checkDate = `${month}/${date}/${year}`;
 
-            }
+        if (res.data !== checkDate) {
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
 
-            if(res.data === checkDate){
+          setDidTasks(false);
+        }
 
-              setTimeout(() => {
-                setIsLoading(false)
+        if (res.data === checkDate) {
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
 
-              }, 500)
-
-              setDidEmotion(true)
-
-            }
-
-        }).catch(err => console.log(err))
-
-      axios.get(`http://localhost:6655/task/${userId}`)
-      .then(res => {
-
-            console.log(res.data)
-
-             const today = new Date();
-             const date = today.getDate();
-             const month = today.getMonth() + 1; 
-             const year = today.getFullYear();
-
-             const checkDate = `${month}/${date}/${year}`
-
-
-            if(res.data !== checkDate){
-
-              setTimeout(() => {
-              setIsLoading(false)
-
-              }, 500)
-
-              setDidTasks(false)
-
-            }
-
-            if(res.data === checkDate){
-
-              setTimeout(() => {
-              setIsLoading(false)
-
-              }, 500)
-
-              setDidTasks(true)
-
-            }
-
-        }).catch(err => console.log(err))
-
-  }, [userId])
-
-
+          setDidTasks(true);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [userId]);
 
   return (
-    <div className=' overflow-x-hidden overflow-y-hidden'>
-      <Header/>
+    <div className=" overflow-x-hidden overflow-y-hidden">
+      <Header />
 
-      {isLoading ? <LoadingAnimation isLoading={isLoading}/> : 
+      {isLoading ? (
+        <LoadingAnimation isLoading={isLoading} />
+      ) : (
+        <>
+          <DailyEmotion
+            submitEmoHandler={submitEmoHandler}
+            didEmotion={didEmotion}
+          />
 
-      <>
-      <DailyEmotion submitEmoHandler={submitEmoHandler} didEmotion={didEmotion} />
+          <DailyTasks
+            didEmotion={didEmotion}
+            didTasks={didTasks}
+            setDidTasks={setDidTasks}
+          />
 
-      <DailyTasks didEmotion={didEmotion} didTasks={didTasks} setDidTasks={setDidTasks}/>
+          <FinishedTasksAnimation didTasks={didTasks} />
+        </>
+      )}
+    </div>
+  );
+};
 
-      <FinishedTasksAnimation didTasks={didTasks} />
-      </>
-      }
-
-
-      </div>
-      
-  )
-}
-
-export default Profile
+export default Profile;

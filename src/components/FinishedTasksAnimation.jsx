@@ -22,12 +22,20 @@ const FinishedTasksAnimation = ({ didTasks }) => {
       }, 850);
     }
 
-
-    setTimeout(() => {
-      setIsExploding(false)
-    }, 3000)
-
   }, [didTasks]);
+
+  useEffect(() => {
+
+    if(display){
+      setIsExploding(true)
+      setTimeout(() => {
+        setIsExploding(false)
+      }, 3000)
+    } else {
+      setIsExploding(false)
+    }
+
+  }, [display])
 
   return (
     <AnimatePresence mode=" popLayout ">

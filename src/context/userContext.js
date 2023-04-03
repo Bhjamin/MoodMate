@@ -29,6 +29,7 @@ const getLocalData = () => {
   const storedExp = localStorage.getItem('exp')
   const storedUsername = localStorage.getItem('username')
   const storedPoints = localStorage.getItem('points')
+  const storedId = localStorage.getItem('userId')
 
   const remainingTime = calculateRemainingTime(storedExp)
 
@@ -43,7 +44,8 @@ const getLocalData = () => {
     token: storedToken,
     duration: remainingTime,
     username: storedUsername,
-    points: storedPoints
+    points: storedPoints,
+    userId: storedId
   }
 }
 
@@ -92,13 +94,18 @@ export const AuthContextProvider = (props) => {
     }  
   }
 
-  const login = (token, time, id) => {
+  const login = (token, time, id, username, points) => {
+
+    console.log(token)
 
     setToken(token)
     setUserId(id)
 
     localStorage.setItem('token', token)
-    localStorage.setItem('expTime', time)
+    localStorage.setItem('exp', time)
+    localStorage.setItem('username', username)
+    localStorage.setItem('userId', id)
+    localStorage.setItem('points', points)
 
     let remainingTime = calculateRemainingTime(time)
 
