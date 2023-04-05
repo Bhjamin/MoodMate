@@ -147,7 +147,7 @@ const Auth = () => {
         </section>
 
         <section className="w-2/5 flex flex-col  items-center justify-center">
-            <div className="flex flex-col items-center w-3/5 mb-10">
+            <div className="flex flex-col items-center text-center w-3/5 mb-10">
             <p>"{quote}"</p>
             <br/>
             {author ? <p>- {author}</p> : <p>- Unknown</p>}
