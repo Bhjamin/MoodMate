@@ -37,6 +37,8 @@ app.post('/entry/:userId', addEntry)
 app.get('/entry/:userId', getEntries)
 
 
+
+
 sequelize.sync()
 .then(() => {
     app.listen(SERVER_PORT, () => {
