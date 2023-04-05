@@ -88,7 +88,7 @@ const Auth = () => {
         <section className="w-2/5 flex items-center justify-center mb-10">
           <div
             className="tooltip tooltip-bottom before:max-w-xl before:leading-9 before:text-lg before:p-4 before:rounded-2xl "
-            data-tip="Mood Mate is an easy-to-use mental health assistance website designed to help users prioritize their mental well-being. While it may not solve all mental health problems, Mood Mate is a helpful tool that encourages users to take time each day to reflect on their thoughts and emotions.
+            data-tip="Mood Mate is an easy-to-use mental health assistance website designed to help users prioritize their mental well-being. While it definitely won't solve all mental health problems, Mood Mate is still a helpful tool that encourages users to take time each day to reflect on their thoughts and emotions.
 
             With Mood Mate, users can easily identify their emotions and write down their thoughts in a safe, private online journal. This feature helps users to become more self-aware, and allows them to reflect on their emotional state throughout the day."
           >
